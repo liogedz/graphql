@@ -11,6 +11,9 @@
 </head>
 
 <body>
+    <div class="nav">
+        <button type="button" id="logout" class="btn">logout</button>
+    </div>
     <div class="wrapper-login">
         <h2>Login Form</h2>
         <form id="loginForm">
@@ -25,11 +28,12 @@
                 <label>Enter your password</label>
             </div>
             <input type="hidden" value="login">
-            <button type="submit" class="btn">Login</button>
+            <button type="submit" id="login" class="btn">Login</button>
         </form>
         <p id="error-message" style="color: red;"></p>
     </div>
-    <script src="login.js"></script>
+    <script type="module" src="login.js"></script>
+    <script type="module" src="query.js"></script>
 </body>
 
 </html>

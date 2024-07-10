@@ -17,7 +17,25 @@ body {
     min-height: 100vh;
 }
 
+.nav {
+    display: flex;
+    width: 20%;
+    font-size: 1em;
+}
+
+.user-basic {
+    display: flex;
+    width: 30%;
+    height: 30%;
+    border-radius: 30px;
+    background: bisque;
+    border: 1px solid bisque;
+    font-size: 1em;
+
+}
+
 .wrapper-login {
+
     background: transparent;
     border-radius: 20px;
     padding: 0px 30px;
@@ -87,7 +105,8 @@ body {
     left: 17px
 }
 
-.wrapper-login .btn {
+.wrapper-login .btn,
+.btn {
     width: 60%;
     height: 40px;
     border: none;

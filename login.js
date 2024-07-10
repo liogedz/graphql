@@ -13,35 +13,29 @@ document.getElementById('loginForm').addEventListener('submit', async function (
                 'Content-Type': 'application/json'
             }
         });
-
-        // Check if the response is OK
         if (!response.ok) {
             throw new Error('Invalid credentials or server error');
         }
-
-        // Parse the response
-        const data = await response.json();
-
-        // Debug: Log the entire response data
-        console.log("Response Data:", data);
-
-        // Extract the token (assuming it's in `data.token`)
-        const token = data;
-
+        const token = await response.json();
+        console.log("Response token:", token);
         if (!token) {
             throw new Error('Token is missing in the response');
         }
-
-        // Store the token in localStorage
         localStorage.setItem('jwt', token);
 
-        // Display confirmation message
         const confirmationMessage = `Token obtained: ${token}`;
         document.getElementById('error-message').textContent = confirmationMessage;
         document.getElementById('error-message').style.color = 'green';
+        document.querySelector('.wrapper-login').style.display = 'none';
+
     } catch (error) {
-        // Display error message
+
         document.getElementById('error-message').textContent = error.message;
         document.getElementById('error-message').style.color = 'red';
     }
 });
+
+document.querySelector('#logout').addEventListener('click', () => {
+    localStorage.removeItem('jwt');
+    document.querySelector('.wrapper-login').style.display = 'block';
+})
