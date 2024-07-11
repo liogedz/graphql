@@ -1,3 +1,6 @@
+if (localStorage.getItem('jwt')) {
+    document.querySelector('.wrapper-login').style.display = 'none';
+}
 document.getElementById('loginForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
