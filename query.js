@@ -16,19 +16,35 @@ export async function fetchUserData() {
                     query {
                         user {
                         login
-                        
+                        auditRatio
+                        audits_aggregate (
+                            where:{grade:{_neq:0}}){
+                            aggregate {
+                                count
+                            }
+                        }
                         attrs
-                         transactions(
+                        transactions(
                             order_by: [{ type: asc }, { amount: asc }]
                             distinct_on: [type]
-                            where: { type: { _like: "skill_%" }}){ 
-                                type
-                                amount
+                            where: { type: { _like: "skill_%" }}
+                        )   { 
+                            type
+                            amount
+                        }
+                        xps(
+                            where: { path: { _nregex: "piscine-(go|js)" } }
+                            order_by: { amount: asc }
+                        )   {
+                            amount
+                            path
                             }
-                            audits_aggregate{
-                                aggregate{
-                                    count
-                                }
+                        progresses(
+                            order_by: { createdAt: asc }
+                            where: { path: { _nregex: "piscine-(go|js)" } }
+                        )   {
+                            createdAt
+                            path
                             }
                         }
                     }
