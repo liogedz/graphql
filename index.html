@@ -7,19 +7,22 @@
     <link id="fav" rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;,">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/static/style.css">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
     <title>Graphql</title>
 </head>
 
 <body>
+    <div id="background"></div>
+    <div class="nav">
+        <button type="button" id="logout" class="btn">logout</button>
+    </div>
     <h2>Technologies</h2>
     <svg id="techChart" width="500" height="500" viewBox="0 0 500 500"></svg>
 
     <h2>Tech Skills</h2>
     <svg id="skillChart" width="500" height="500" viewBox="0 0 500 500"></svg>
 
-    <div class="nav">
-        <button type="button" id="logout" class="btn">logout</button>
-    </div>
+
     <div class="wrapper-login">
         <h2>Login Form</h2>
         <form id="loginForm">

@@ -1,4 +1,4 @@
-import { fetchUserData } from './query.js'
+import { fetchUserData } from './query.js';
 
 const data = await fetchUserData();
 let filters = [
@@ -11,7 +11,6 @@ let filters = [
 ];
 const techSkills = data.transactions.filter(item => filters.some(filter => filter.type === item.type));
 const techData = data.transactions.filter(item => !techSkills.some(techItem => techItem.type === item.type));
-
 
 const colors = [
     '#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0',
@@ -45,7 +44,7 @@ function drawSkillChart(svgId, chartData, shapeSides) {
         const skillY = centerY + skillRadius * Math.sin(angle * Math.PI / 180);
         const fullX = centerX + radius * Math.cos(angle * Math.PI / 180);
         const fullY = centerY + radius * Math.sin(angle * Math.PI / 180);
-        return { skillX, skillY, fullX, fullY, color: colors[index % colors.length] };
+        return { skillX, skillY, fullX, fullY, color: colors[index % colors.length], type: item.type };
     });
 
     // Draw the polygon connecting actual skill points
@@ -57,7 +56,7 @@ function drawSkillChart(svgId, chartData, shapeSides) {
     path.setAttribute('stroke-width', '2');
     svg.appendChild(path);
 
-    // Draw the radius lines and points
+    // Draw the radius lines, points, and legends
     skillPoints.forEach(point => {
         // Draw radius line to the surface of the outer circle
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -76,6 +75,16 @@ function drawSkillChart(svgId, chartData, shapeSides) {
         circle.setAttribute('r', 5);
         circle.setAttribute('fill', point.color);
         svg.appendChild(circle);
+
+        // Add legend text at the tip of the radius
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', point.fullX);
+        text.setAttribute('y', point.fullY);
+        text.setAttribute('fill', 'black');
+        text.setAttribute('font-size', '12');
+        text.setAttribute('text-anchor', 'middle');
+        text.textContent = point.type;
+        svg.appendChild(text);
     });
 }
 
