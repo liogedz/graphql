@@ -3,11 +3,11 @@
 
 ## Objectives of the project:
 
--more precised explanation of the project and it's requirements may be found on the GitHub webpage
+-more precised explanation of the project and it's requirements may be found on the GitHub webpage:
 
 [link](https://github.com/01-edu/public/tree/master/subjects/graphql)
 
--as well as at the project main page's "about" link.
+-audit link:
 
 [link](https://github.com/01-edu/public/tree/master/subjects/graphql/audit)
 
@@ -21,6 +21,9 @@ cd graphql
 ```
 
 2. **Run in live seerver or code editor browser preview**
+   
 3. **Or run Github deployed version**
    
 [link](https://liogedz.github.io/graphql/)
+
+**The progression graph is in the background, so part of your data might overlap it's curve**

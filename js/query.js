@@ -69,6 +69,7 @@ export async function displayUserData() {
     const user = await fetchUserData();
     if (user) {
 
+        const userWrapper = document.querySelector('.user');
         const userBasic = document.createElement('div');
         const header = document.createElement('h2');
         const login = document.createElement('p');
@@ -84,7 +85,6 @@ export async function displayUserData() {
         city.innerText = 'City: ' + user.attrs.addressCity || 'No user city available';
         state.innerText = 'Country: ' + user.attrs.addressCountry || 'No user state available';
         userBasic.classList.add('user-basic');
-        userBasic.id = 'basic';
 
         userBasic.appendChild(header);
         userBasic.appendChild(login);
@@ -93,7 +93,7 @@ export async function displayUserData() {
         userBasic.appendChild(city);
         userBasic.appendChild(state);
 
-        document.body.appendChild(userBasic);
+        userWrapper.appendChild(userBasic);
     } else {
         console.error('User data could not be retrieved or is empty');
     }

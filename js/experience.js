@@ -10,6 +10,7 @@ export async function displayExperience() {
         const auditsCount = data.audits_aggregate.aggregate.count;
         const ratio = data.auditRatio;
 
+        const user = document.querySelector('.user');
         const userExp = document.createElement('div');
         const header = document.createElement('h2');
         const xps = document.createElement('p');
@@ -23,7 +24,7 @@ export async function displayExperience() {
         auditPassed.innerText = 'Passed audits: ' + Math.round(auditsCount / ratio) || 'No audits passed available';
         auditRatio.innerText = 'Audits ratio: ' + data.auditRatio.toFixed(2) || 'No audits ratio available';
         userExp.classList.add('user-xps');
-        userExp.id = 'xps';
+
 
         userExp.appendChild(header);
         userExp.appendChild(xps);
@@ -31,7 +32,7 @@ export async function displayExperience() {
         userExp.appendChild(auditDone);
         userExp.appendChild(auditPassed);
 
-        document.body.appendChild(userExp);
+        user.appendChild(userExp);
     } else {
         console.error('User experience could not be retrieved or is empty');
     }
@@ -39,9 +40,9 @@ export async function displayExperience() {
 
 export async function backgroundGraph() {
     const data = await fetchUserData();
-    // Create a map for quick lookup by path
+
     const progressMap = new Map(data.progresses.map(item => [item.path, item.createdAt]));
-    // Add createdAt to the corresponding xps items
+
     data.xps.forEach(xp => {
         if (progressMap.has(xp.path)) {
             xp.createdAt = progressMap.get(xp.path);
@@ -52,10 +53,8 @@ export async function backgroundGraph() {
         width = 1920 - margin.left - margin.right,
         height = 1080 - margin.top - margin.bottom;
 
-    // Remove existing SVG if present
     d3.select("#background svg").remove();
 
-    // Append the svg object to the body of the page
     const svg = d3.select("#background")
         .append("svg")
         .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
@@ -64,38 +63,30 @@ export async function backgroundGraph() {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // Parse the date / time
     const parseTime = d3.timeParse("%Y-%m-%d");
 
-    // Format the data
     data.xps.forEach(d => {
         d.createdAt = parseTime(d.createdAt.split('T')[0]);
         d.projectName = d.path.split('/').pop();
     });
 
-    // Sort data by date
     data.xps.sort((a, b) => a.createdAt - b.createdAt);
 
-    // Compute the cumulative sum
     data.xps.reduce((acc, d) => {
         d.cumulativeAmount = acc + d.amount / 1000;
         return d.cumulativeAmount;
     }, 0);
 
-    // Set the ranges
     const x = d3.scaleTime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
 
-    // Define the line
     const valueline = d3.line()
         .x(d => x(d.createdAt))
         .y(d => y(d.cumulativeAmount));
 
-    // Scale the range of the data
     x.domain(d3.extent(data.xps, d => d.createdAt));
     y.domain([0, d3.max(data.xps, d => d.cumulativeAmount)]);
 
-    // Add the valueline path.
     svg.append("path")
         .data([data.xps])
         .attr("class", "line")
@@ -104,7 +95,6 @@ export async function backgroundGraph() {
         .style("stroke", "steelblue")
         .style("stroke-width", "2");
 
-    // Add the scatterplot
     svg.selectAll("dot")
         .data(data.xps)
         .enter().append("circle")
@@ -113,7 +103,6 @@ export async function backgroundGraph() {
         .attr("cy", d => y(d.cumulativeAmount))
         .style("fill", "red");
 
-    // Add labels
     svg.selectAll("text.label")
         .data(data.xps)
         .enter().append("text")
@@ -124,12 +113,10 @@ export async function backgroundGraph() {
         .style("font-size", "10px")
         .style("fill", "black");
 
-    // Add the X Axis
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(x));
 
-    // Add the Y Axis
     svg.append("g")
         .call(d3.axisLeft(y));
 }
