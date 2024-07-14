@@ -48,7 +48,6 @@ export async function backgroundGraph() {
             xp.createdAt = progressMap.get(xp.path);
         }
     });
-    // Set the dimensions and margins of the graph
     const margin = { top: 20, right: 30, bottom: 50, left: 60 },
         width = 1920 - margin.left - margin.right,
         height = 1080 - margin.top - margin.bottom;
