@@ -1,22 +1,12 @@
 import { fetchUserData } from './query.js'
 
-
-async function displayExperience() {
+export async function displayExperience() {
     let xpSum = 0;
     const data = await fetchUserData();
     if (data) {
-        // Create a map for quick lookup by path
-        const progressMap = new Map(data.progresses.map(item => [item.path, item.createdAt]));
-
-        // Add createdAt to the corresponding xps items
         data.xps.forEach(xp => {
             xpSum += xp.amount;
-            if (progressMap.has(xp.path)) {
-                xp.createdAt = progressMap.get(xp.path);
-            }
         });
-        console.log(data.xps)
-
         const auditsCount = data.audits_aggregate.aggregate.count;
         const ratio = data.auditRatio;
 
@@ -45,17 +35,31 @@ async function displayExperience() {
     } else {
         console.error('User experience could not be retrieved or is empty');
     }
+}
 
+export async function backgroundGraph() {
+    const data = await fetchUserData();
+    // Create a map for quick lookup by path
+    const progressMap = new Map(data.progresses.map(item => [item.path, item.createdAt]));
+    // Add createdAt to the corresponding xps items
+    data.xps.forEach(xp => {
+        if (progressMap.has(xp.path)) {
+            xp.createdAt = progressMap.get(xp.path);
+        }
+    });
     // Set the dimensions and margins of the graph
     const margin = { top: 20, right: 30, bottom: 50, left: 60 },
         width = 1920 - margin.left - margin.right,
         height = 1080 - margin.top - margin.bottom;
 
+    // Remove existing SVG if present
+    d3.select("#background svg").remove();
+
     // Append the svg object to the body of the page
     const svg = d3.select("#background")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+        .attr("preserveAspectRatio", "xMidYMid meet")
         .attr("class", "background-svg")
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -72,6 +76,12 @@ async function displayExperience() {
     // Sort data by date
     data.xps.sort((a, b) => a.createdAt - b.createdAt);
 
+    // Compute the cumulative sum
+    data.xps.reduce((acc, d) => {
+        d.cumulativeAmount = acc + d.amount / 1000;
+        return d.cumulativeAmount;
+    }, 0);
+
     // Set the ranges
     const x = d3.scaleTime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
@@ -79,11 +89,11 @@ async function displayExperience() {
     // Define the line
     const valueline = d3.line()
         .x(d => x(d.createdAt))
-        .y(d => y(d.amount));
+        .y(d => y(d.cumulativeAmount));
 
     // Scale the range of the data
     x.domain(d3.extent(data.xps, d => d.createdAt));
-    y.domain([0, d3.max(data.xps, d => d.amount)]);
+    y.domain([0, d3.max(data.xps, d => d.cumulativeAmount)]);
 
     // Add the valueline path.
     svg.append("path")
@@ -100,7 +110,7 @@ async function displayExperience() {
         .enter().append("circle")
         .attr("r", 5)
         .attr("cx", d => x(d.createdAt))
-        .attr("cy", d => y(d.amount))
+        .attr("cy", d => y(d.cumulativeAmount))
         .style("fill", "red");
 
     // Add labels
@@ -109,7 +119,7 @@ async function displayExperience() {
         .enter().append("text")
         .attr("class", "label")
         .attr("x", d => x(d.createdAt) + 5)
-        .attr("y", d => y(d.amount) - 5)
+        .attr("y", d => y(d.cumulativeAmount) - 5)
         .text(d => d.projectName)
         .style("font-size", "10px")
         .style("fill", "black");
@@ -122,9 +132,5 @@ async function displayExperience() {
     // Add the Y Axis
     svg.append("g")
         .call(d3.axisLeft(y));
-
-
 }
 
-
-displayExperience();

@@ -1,6 +1,8 @@
-if (localStorage.getItem('jwt')) {
-    document.querySelector('.wrapper-login').style.display = 'none';
-}
+import { displayExperience } from "./experience.js";
+import { displayUserData } from "./query.js";
+import { backgroundGraph } from "./experience.js";
+
+
 document.getElementById('loginForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
@@ -26,10 +28,14 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         }
         localStorage.setItem('jwt', token);
 
-        const confirmationMessage = `Token obtained: ${token}`;
-        document.getElementById('error-message').textContent = confirmationMessage;
-        document.getElementById('error-message').style.color = 'green';
+        // const confirmationMessage = `Token obtained: ${token}`;
+        // document.getElementById('error-message').textContent = confirmationMessage;
+        // document.getElementById('error-message').style.color = 'green';
         document.querySelector('.wrapper-login').style.display = 'none';
+        document.querySelector('.graphs').style.display = 'block';
+        displayExperience();
+        displayUserData();
+        backgroundGraph();
 
     } catch (error) {
 
@@ -40,5 +46,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
 
 document.querySelector('#logout').addEventListener('click', () => {
     localStorage.removeItem('jwt');
+    location.reload();
     document.querySelector('.wrapper-login').style.display = 'block';
+
 })

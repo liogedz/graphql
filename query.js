@@ -1,8 +1,5 @@
 const jwt = localStorage.getItem('jwt');
-console.log("token: ", jwt)
-if (!jwt) {
-    window.location.href = 'index.html';
-}
+
 export async function fetchUserData() {
     try {
         const response = await fetch('https://01.kood.tech/api/graphql-engine/v1/graphql', {
@@ -66,7 +63,7 @@ export async function fetchUserData() {
     }
 }
 
-async function displayUserData() {
+export async function displayUserData() {
     const user = await fetchUserData();
     if (user) {
 
@@ -99,6 +96,6 @@ async function displayUserData() {
         console.error('User data could not be retrieved or is empty');
     }
 }
-displayUserData();
+
 
 
