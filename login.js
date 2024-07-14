@@ -1,7 +1,11 @@
 import { displayExperience } from "./experience.js";
 import { displayUserData } from "./query.js";
 import { backgroundGraph } from "./experience.js";
+import { drawSkills } from "./skills.js";
 
+if (localStorage.getItem('jwt')) {
+    loadAll();
+}
 
 document.getElementById('loginForm').addEventListener('submit', async function (event) {
     event.preventDefault();
@@ -14,7 +18,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         const response = await fetch('https://01.kood.tech/api/auth/signin', {
             method: 'POST',
             headers: {
-                'Authorization': `Basic ${credentials}`,
+                Authorization: `Basic ${credentials}`,
                 'Content-Type': 'application/json'
             }
         });
@@ -27,18 +31,8 @@ document.getElementById('loginForm').addEventListener('submit', async function (
             throw new Error('Token is missing in the response');
         }
         localStorage.setItem('jwt', token);
-
-        // const confirmationMessage = `Token obtained: ${token}`;
-        // document.getElementById('error-message').textContent = confirmationMessage;
-        // document.getElementById('error-message').style.color = 'green';
-        document.querySelector('.wrapper-login').style.display = 'none';
-        document.querySelector('.graphs').style.display = 'block';
-        displayExperience();
-        displayUserData();
-        backgroundGraph();
-
+        loadAll();
     } catch (error) {
-
         document.getElementById('error-message').textContent = error.message;
         document.getElementById('error-message').style.color = 'red';
     }
@@ -48,5 +42,13 @@ document.querySelector('#logout').addEventListener('click', () => {
     localStorage.removeItem('jwt');
     location.reload();
     document.querySelector('.wrapper-login').style.display = 'block';
-
 })
+
+function loadAll() {
+    document.querySelector('.wrapper-login').style.display = 'none';
+    displayExperience();
+    displayUserData();
+    drawSkills();
+    backgroundGraph();
+    document.querySelector('.graphs').style.display = 'block';
+}

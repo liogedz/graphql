@@ -1,12 +1,14 @@
-const jwt = localStorage.getItem('jwt');
-
 export async function fetchUserData() {
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
+        throw new Error('JWT token not found');
+    }
     try {
         const response = await fetch('https://01.kood.tech/api/graphql-engine/v1/graphql', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${jwt}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwt}`,
             },
             body: JSON.stringify({
                 query: `

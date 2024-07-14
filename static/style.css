@@ -28,7 +28,6 @@ body {
     background-color: bisque;
 }
 
-
 .nav {
     display: flex;
     width: 20%;
@@ -41,7 +40,7 @@ body {
     width: 15%;
     height: 30%;
     border-radius: 30px;
-    background: bisque;
+    background: rgb(155, 209, 203);
     border: 1px solid bisque;
     font-size: 1em;
     flex-direction: column;
