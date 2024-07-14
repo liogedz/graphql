@@ -19,12 +19,22 @@ export async function drawSkills() {
     ];
 
     function drawSkillChart(svgId, chartData, shapeSides) {
-        const radius = 200;
-        const centerX = 250;
-        const centerY = 250;
+        const svg = document.getElementById(svgId);
+        const width = svg.clientWidth;
+        const height = svg.clientHeight;
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const radius = Math.min(centerX, centerY) * 0.8;
         const angleIncrement = 360 / shapeSides;
 
-        const svg = document.getElementById(svgId);
+        // Clear previous contents
+        while (svg.firstChild) {
+            svg.removeChild(svg.firstChild);
+        }
+
+        // Set the viewBox attribute for responsiveness
+        svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
         // Draw the 100% radius circle
         const outerCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -89,6 +99,14 @@ export async function drawSkills() {
         });
     }
 
-    drawSkillChart('techChart', techData, techData.length);
-    drawSkillChart('skillChart', techSkills, techSkills.length);
+    function resizeCharts() {
+        drawSkillChart('techChart', techData, techData.length);
+        drawSkillChart('skillChart', techSkills, techSkills.length);
+    }
+
+    // Initial draw
+    resizeCharts();
+
+    // Redraw charts on window resize
+    window.addEventListener('resize', resizeCharts);
 }
