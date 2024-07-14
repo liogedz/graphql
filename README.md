@@ -9,8 +9,6 @@
 
 -as well as at the project main page's "about" link.
 
-## Audit link:
-
 [link](https://github.com/01-edu/public/tree/master/subjects/graphql/audit)
 
 ## Running code
@@ -22,5 +20,7 @@ git clone "https://01.kood.tech/git/agedz/graphql.git"
 cd graphql
 ```
 
-2. **Run in live seerver**
-3. 
+2. **Run in live seerver or code editor browser preview**
+3. **Or run Github deployed version**
+   
+[link](https://liogedz.github.io/graphql/)
