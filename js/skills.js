@@ -1,4 +1,5 @@
 import { fetchUserData } from './query.js';
+// Drawing two circles of skills graphs
 export async function drawSkills() {
     const data = await fetchUserData();
     let filters = [

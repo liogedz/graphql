@@ -64,7 +64,7 @@ export async function fetchUserData() {
         return null;
     }
 }
-
+// Displaying basic user data
 export async function displayUserData() {
     const user = await fetchUserData();
     if (user) {

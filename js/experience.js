@@ -37,7 +37,7 @@ export async function displayExperience() {
         console.error('User experience could not be retrieved or is empty');
     }
 }
-
+// Drawing background learning progression graph
 export async function backgroundGraph() {
     const data = await fetchUserData();
 

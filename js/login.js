@@ -6,7 +6,7 @@ import { drawSkills } from "./skills.js";
 if (localStorage.getItem('jwt')) {
     loadAll();
 }
-
+// Listening to the submit button, getting JWT token, firing querry and loading graphs 
 document.getElementById('loginForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
@@ -37,7 +37,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         document.getElementById('error-message').style.color = 'red';
     }
 });
-
+// LOgout action
 document.querySelector('#logout').addEventListener('click', () => {
     localStorage.removeItem('jwt');
     location.reload();
