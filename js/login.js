@@ -26,7 +26,6 @@ document.getElementById('loginForm').addEventListener('submit', async function (
             throw new Error('Invalid credentials or server error');
         }
         const token = await response.json();
-        console.log("Response token:", token);
         if (!token) {
             throw new Error('Token is missing in the response');
         }
@@ -37,7 +36,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         document.getElementById('error-message').style.color = 'red';
     }
 });
-// LOgout action
+// Logout action
 document.querySelector('#logout').addEventListener('click', () => {
     localStorage.removeItem('jwt');
     location.reload();
