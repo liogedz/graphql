@@ -1,9 +1,10 @@
 ## GRAPHQL PROJECT
-
+This is a learning project of the coding school kood/Johvi
+[link](https://kood.tech/)
 
 ## Objectives of the project:
 
--more precised explanation of the project and it's requirements may be found on the GitHub webpage:
+-precised explanation of the project and it's requirements may be found on the GitHub webpage:
 
 [link](https://github.com/01-edu/public/tree/master/subjects/graphql)
 
